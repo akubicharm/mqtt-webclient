@@ -1,6 +1,7 @@
 <!doctype html>
 <html ng-app="mqttApp">
 <head>
+<meta charset="UTF-8" />
 <script
 	src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.15/angular.min.js"></script>
 <script src="mqttApp.js"></script>
@@ -39,8 +40,11 @@
 					class="btn-primary" type="submit" value="publish">
 				<section>Messages:</section>
 				<section>
-					<input type="text" placeholder="Hello Red Hat" size="32"
-						ng-maxlength="64" ng-model="mqttCli.publishMessage">
+				<select ng-model="msgSample"
+					ng-options="msg.text for msg in msgSamples" ng-change="updateMsg()"></select>
+				
+				<input type="text" placeholder="Hello Red Hat" size="32"
+						ng-maxlength="64" ng-model="publishMessage">
 				</section>
 			</form>
 		</section>

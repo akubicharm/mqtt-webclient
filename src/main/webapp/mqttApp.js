@@ -1,6 +1,5 @@
 /**
- * MQTT Web Client Sample
- * This sample message using mqtt over http
+ * MQTT Web Client Sample This sample message using mqtt over http
  */
 angular.module('mqttApp', []).controller('mqttController', function($scope) {
 	var mqttCli = this;
@@ -14,13 +13,20 @@ angular.module('mqttApp', []).controller('mqttController', function($scope) {
 	}, {
 		text: "ws://localhost:8080/mqtt"
 	} ];
-
 	$scope.mqttServerSelected = "";
 	$scope.mqttServerAddr = $scope.servers[0].text;
+	
+	$scope.msgSamples = [
+	{text: "おはようございます。"},
+	{text: "レッドハット"},
+	{text: "JBoss A-MQのデモ"}
+	];
+	$scope.msgSample = $scope.msgSamples[0].text;
+	
 	this.connectionStatus = "DISCON";
 	this.subscribeTopicName = "redhatkkdemo";
 	this.publishTopicName = "redhatkkdemo";
-	this.publishMessage = "Hello World!";
+	$scope.publishMessage = "Hello World!";
 	
 	
 	// ------------------------------
@@ -40,7 +46,7 @@ angular.module('mqttApp', []).controller('mqttController', function($scope) {
 		client.subscribe(this.subscribeTopicName);
 		client.on("message", function(topic, payload) {
 			var msg = [ topic, payload ].join(": ");
-			//this.topicMessage = msg;
+			// this.topicMessage = msg;
 			// client.end();
 			if ($scope.topicMessages.length > 5) {
 				$scope.topicMessages.shift();
@@ -53,7 +59,12 @@ angular.module('mqttApp', []).controller('mqttController', function($scope) {
 	};
 
 	mqttCli.publish = function() {
-		client.publish(this.publishTopicName, this.publishMessage);
+		client.publish(this.publishTopicName, $scope.publishMessage);
 	};
+	
+	
+	$scope.updateMsg = function() {
+		$scope.publishMessage = $scope.msgSample.text;
+	}
 
 });
