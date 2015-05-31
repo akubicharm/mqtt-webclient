@@ -1,9 +1,12 @@
 /**
  * MQTT Web Client Sample This sample message using mqtt over http
  */
-angular.module('mqttApp', []).controller('mqttController', function($scope) {
+angular.module('mqttApp', []).controller('mqttController', function($scope, $interval) {
 	var mqttCli = this;
 	var client;
+	
+	// 描画を更新させるためのインターバル
+	$interval(function() {}, 5000);
 
 	$scope.topicMessages = [ {
 		text : ""
@@ -17,6 +20,7 @@ angular.module('mqttApp', []).controller('mqttController', function($scope) {
 	$scope.mqttServerAddr = $scope.servers[0].text;
 	
 	$scope.msgSamples = [
+	                     {text: "Hello Red Hat!"},
 	{text: "おはようございます。"},
 	{text: "レッドハットです。"},
 	{text: "JBoss A-MQは様々なプロトコルに対応しています。"}
@@ -38,16 +42,20 @@ angular.module('mqttApp', []).controller('mqttController', function($scope) {
 	}
 
 	mqttCli.connect = function() {
-		client = mqtt.connect($scope.mqttServerAddr);
+		//client = mqtt.connect($scope.mqttServerAddr);
+		client = mows.createClient($scope.mqttServerAddr);
 		connectionStatus = "CONNECTED";
 	};
+	
+	mqttCli.disconnect = function() {
+		client.end();
+		connectionStatus = "DISCONNECTED";
+	}
 
 	mqttCli.subscribe = function() {
 		client.subscribe(this.subscribeTopicName);
 		client.on("message", function(topic, payload) {
 			var msg = [ topic, payload ].join(": ");
-			// this.topicMessage = msg;
-			// client.end();
 			if ($scope.topicMessages.length > 5) {
 				$scope.topicMessages.shift();
 			}
@@ -55,8 +63,10 @@ angular.module('mqttApp', []).controller('mqttController', function($scope) {
 			$scope.topicMessages.push({
 				text : msg
 			});
+			console.log(msg);
 		});
 	};
+	
 
 	mqttCli.publish = function() {
 		client.publish(this.publishTopicName, $scope.publishMessage);
