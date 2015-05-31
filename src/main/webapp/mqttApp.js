@@ -18,8 +18,8 @@ angular.module('mqttApp', []).controller('mqttController', function($scope) {
 	
 	$scope.msgSamples = [
 	{text: "おはようございます。"},
-	{text: "レッドハット"},
-	{text: "JBoss A-MQのデモ"}
+	{text: "レッドハットです。"},
+	{text: "JBoss A-MQは様々なプロトコルに対応しています。"}
 	];
 	$scope.msgSample = $scope.msgSamples[0].text;
 	

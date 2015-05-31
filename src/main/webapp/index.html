@@ -21,8 +21,25 @@
 		</section>
 		<section>
 			<hr>
+			<form ng-submit="mqttCli.publish()">
+			Publish:
+				<input type="text" placeholder="redhatkkdemo" size="32"
+					ng-model="mqttCli.publishTopicName"> 
+				<section>
+					<select ng-model="msgSample"
+						ng-options="msg.text for msg in msgSamples"
+						ng-change="updateMsg()"></select> <input type="text"
+						placeholder="Hello Red Hat" size="32" ng-maxlength="64"
+						ng-model="publishMessage">
+						<input
+					class="btn-primary" type="submit" value="publish">
+				</section>
+			</form>
+		</section>
+		<section>
+			<hr>
 			<form ng-submit="mqttCli.subscribe()">
-				TopicName: <input type="text" placeholder="redhatkkdemo" size="32"
+				Subscribe: <input type="text" placeholder="redhatkkdemo" size="32"
 					ng-model="mqttCli.subscribeTopicName"> <input
 					class="btn-primary" type="submit" value="subscribe">
 			</form>
@@ -32,22 +49,7 @@
 			</div>
 		</section>
 
-		<section>
-			<hr>
-			<form ng-submit="mqttCli.publish()">
-				<input type="text" placeholder="redhatkkdemo" size="32"
-					ng-model="mqttCli.publishTopicName"> <input
-					class="btn-primary" type="submit" value="publish">
-				<section>Messages:</section>
-				<section>
-				<select ng-model="msgSample"
-					ng-options="msg.text for msg in msgSamples" ng-change="updateMsg()"></select>
-				
-				<input type="text" placeholder="Hello Red Hat" size="32"
-						ng-maxlength="64" ng-model="publishMessage">
-				</section>
-			</form>
-		</section>
+
 	</div>
 </body>
 </html>
