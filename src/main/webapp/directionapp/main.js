@@ -8,6 +8,8 @@ angular.module('mqttApp', []).controller('mqttController', function() {
 	//this.mqttServerAddr = "ws://test.mosquitto.org:8080/mqtt";
 	this.mqttServerAddr = "ws://52.10.104.181:1884";
 	this.topicName = "redhatkkdemo.vote.car";
+	
+	this.ShiftImg = "images/ShiftLever.jpg";
 
 
 	// ------------------------------
@@ -33,6 +35,8 @@ angular.module('mqttApp', []).controller('mqttController', function() {
 		console.log("vote : " + direction);
 		var msg = mqttCli.createMessage(direction, speed);
 		mqttCli.publish(msg);
+		
+		this.ShiftImg = "images/ShiftLever" + speed + ".jpg";
 	}
 	
 	
@@ -45,7 +49,7 @@ angular.module('mqttApp', []).controller('mqttController', function() {
 	mqttCli.createMessage = function(direction, speed) {
 		var t = new Date().getTime();
 		var data = "{" +
-				"'speed':" + speed * 2
+				"'speed': " + speed * 2
 				+ ", 'direction':" + direction
 				+ ", 'seconds': " + "10"
 				+ "}";
