@@ -8,6 +8,7 @@ angular.module('mqttApp', []).controller('mqttController', function() {
 	//this.mqttServerAddr = "ws://test.mosquitto.org:8080/mqtt";
 	this.mqttServerAddr = "ws://52.10.104.181:1884";
 	this.topicName = "redhatkkdemo.vote.car";
+	this.debugTopicName = "redhatkkdemo.drive.car";
 	
 	this.ShiftImg = "images/ShiftLever.jpg";
 
@@ -26,26 +27,24 @@ angular.module('mqttApp', []).controller('mqttController', function() {
 		console.log("disconnect");
 	}
 
-	mqttCli.publish = function(message) {
+	mqttCli.publish = function(topic, message) {
 		console.log("publish : " + message);
-		client.publish(mqttCli.topicName, message);
+		client.publish(topic, message);
 	};
 	
 	mqttCli.vote = function(direction, speed) {
 		console.log("vote : " + direction);
 		var msg = mqttCli.createMessage(direction, speed);
-		mqttCli.publish(msg);
+		mqttCli.publish(mqttCli.topicName,msg);
 		
 		this.ShiftImg = "images/ShiftLever" + speed + ".jpg";
 	}
-	
 	
 	/**
 	 * {"speed": 1, "direction": 1, "seconds": 10} 
 	 * direction {1, 0} = 前、後ろ
 	 * speed [1..10]
-	 */
-	
+	 */	
 	mqttCli.createMessage = function(direction, speed) {
 		var t = new Date().getTime();
 		var data = "{" +
@@ -62,6 +61,30 @@ angular.module('mqttApp', []).controller('mqttController', function() {
 			+ "'timestamp' : '" + t + "', "
 			+ "'data' : " + data
 			+ "}";
+		console.log(message);
+		return  message;
+	}
+	
+	
+	mqttCli.drive = function(direction, speed) {
+		console.log("vote : " + direction);
+		var msg = mqttCli.createMessage(direction, speed);
+		mqttCli.publish(mqttCli.debugTopicName, msg);
+	}
+
+	/**
+	 * {"speed": 1, "direction": 1, "seconds": 10} 
+	 * direction {1, 0} = 前、後ろ
+	 * speed [1..10]
+	 */	
+	mqttCli.createMessage = function(direction, speed) {
+		var t = new Date().getTime();
+		var message = "{" +
+				"'speed': " + speed * 2
+				+ ", 'direction':" + direction
+				+ ", 'seconds': " + "10"
+				+ "}";
+
 		console.log(message);
 		return  message;
 	}
